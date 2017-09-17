@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  web:
+    build: docker/web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=root"
+      - "traefik.frontend.rule=Host:${ROOT_URL}"
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    external:
+      name: proxy_network
