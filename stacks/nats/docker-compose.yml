@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  nats:
+    build: docker/nats
+    networks:
+      - nats_network
+
+networks:
+  nats_network:
+    external:
+      name: nats_network

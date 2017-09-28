@@ -4,9 +4,13 @@ services:
   web:
     build: docker/web
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=root"
-      - "traefik.frontend.rule=Host:${ROOT_URL}"
+      - traefik.enable=true
+      - traefik.web.backend=root
+      - traefik.web.port=80
+      - traefik.web.protocol=https,http
+      - traefik.web.frontend.entryPoints=https,http
+      - traefik.web.frontend.passHostHeader=true
+      - traefik.web.frontend.rule=Host:${ROOT_URL}
     networks:
       - proxy_network
 

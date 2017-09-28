@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  ws-tcp-relay:
+    build: docker/ws-tcp-relay
+    networks:
+      - nats_network
+      - proxy_network
+    labels:
+      - traefik.enable=true
+      - traefik.wss.backend=ws-tcp-relay
+      - traefik.wss.port=4223
+      - traefik.wss.protocol=wss
+      - traefik.wss.frontend.entryPoints=wss
+      - traefik.wss.frontend.rule=Host:${ROOT_URL}
+      - traefik.wss.frontend.passHostHeader=true
+    command: ws-tcp-relay nats -p 4223
+
+networks:
+  nats_network:
+    external:
+      name: nats_network
+
+  proxy_network:
+    external:
+      name: proxy_network

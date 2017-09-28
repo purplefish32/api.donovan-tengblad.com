@@ -50,7 +50,7 @@
 # Web configuration backend
 ################################################################
 
-defaultEntryPoints = ["http", "https"]
+defaultEntryPoints = ["http", "https", "ws", "wss"]
 
 # Enable web configuration backend
 [web]
