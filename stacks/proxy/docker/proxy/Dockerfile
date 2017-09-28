@@ -1,4 +1,4 @@
-FROM traefik
+FROM juliens/traefik:websocket
 ADD traefik.toml .
 EXPOSE 80
 EXPOSE 8080

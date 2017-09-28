@@ -7,7 +7,7 @@
 # Optional
 # Default: false
 #
-# debug = true
+debug = true
 
 # Traefik logs file
 # If not defined, logs to stdout
@@ -21,7 +21,7 @@
 # Optional
 # Default: "ERROR"
 #
-# logLevel = "ERROR"
+logLevel = "ERROR"
 
 # Enable access logs
 # By default it will write to stdout and produce logs in the textual
