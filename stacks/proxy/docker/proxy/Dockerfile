@@ -1,5 +1,6 @@
-FROM juliens/traefik:websocket
+FROM traefik:v1.4.0-rc3
 ADD traefik.toml .
 EXPOSE 80
 EXPOSE 8080
 EXPOSE 443
+EXPOSE 4223

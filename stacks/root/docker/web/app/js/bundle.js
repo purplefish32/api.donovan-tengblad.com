@@ -1,36 +1,21 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-  var nats = require('websocket-nats').connect('wss://donovan-tengblad.loc');
+var nats = require('websocket-nats');
 
-    // Simple Publisher
-    nats.publish('foo', 'Hello World!');
+var servers = ['ws://localhost:4223'];
 
-    // Simple Subscriber
-    nats.subscribe('foo', function(msg) {
-      console.log('Received a message: ' + msg);
-    });
+// Randomly connect to a server in the cluster group.
+var nats = nats.connect({'servers': servers});
 
-    // Unsubscribing
-    var sid = nats.subscribe('foo', function(msg) {});
-    nats.unsubscribe(sid);
+// Simple Publisher
+nats.publish('foo', 'Hello World!');
 
-    // Request Streams
-    var sid = nats.request('request', function(response) {
-      console.log('Got a response in msg stream: ' + response);
-    });
+// Simple Subscriber
+nats.subscribe('foo', function(msg) {
+  console.log('Received a message: ' + msg);
+});
 
-    // Request with Auto-Unsubscribe. Will unsubscribe after
-    // the first response is received via {'max':1}
-    nats.request('help', null, {'max':1}, function(response) {
-      console.log('Got a response for help: ' + response);
-    });
-
-    // Replies
-    nats.subscribe('help', function(request, replyTo) {
-      nats.publish(replyTo, 'I can help!');
-    });
-
-    // Close connection
-    nats.close();
+// currentServer is the URL of the connected server.
+console.log("Connected to " + nats.currentServer.host);
 
 },{"websocket-nats":4}],2:[function(require,module,exports){
 module.exports = require('./lib/nuid.js');

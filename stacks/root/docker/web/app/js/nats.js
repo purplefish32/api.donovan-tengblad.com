@@ -1,32 +1,17 @@
-  var nats = require('websocket-nats').connect('wss://donovan-tengblad.loc');
+var nats = require('websocket-nats');
 
-    // Simple Publisher
-    nats.publish('foo', 'Hello World!');
+var servers = ['ws://localhost:4223'];
 
-    // Simple Subscriber
-    nats.subscribe('foo', function(msg) {
-      console.log('Received a message: ' + msg);
-    });
+// Randomly connect to a server in the cluster group.
+var nats = nats.connect({'servers': servers});
 
-    // Unsubscribing
-    var sid = nats.subscribe('foo', function(msg) {});
-    nats.unsubscribe(sid);
+// Simple Publisher
+nats.publish('foo', 'Hello World!');
 
-    // Request Streams
-    var sid = nats.request('request', function(response) {
-      console.log('Got a response in msg stream: ' + response);
-    });
+// Simple Subscriber
+nats.subscribe('foo', function(msg) {
+  console.log('Received a message: ' + msg);
+});
 
-    // Request with Auto-Unsubscribe. Will unsubscribe after
-    // the first response is received via {'max':1}
-    nats.request('help', null, {'max':1}, function(response) {
-      console.log('Got a response for help: ' + response);
-    });
-
-    // Replies
-    nats.subscribe('help', function(request, replyTo) {
-      nats.publish(replyTo, 'I can help!');
-    });
-
-    // Close connection
-    nats.close();
+// currentServer is the URL of the connected server.
+console.log("Connected to " + nats.currentServer.host);

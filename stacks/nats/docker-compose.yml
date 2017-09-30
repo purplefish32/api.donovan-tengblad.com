@@ -3,10 +3,14 @@ version: "3"
 services:
   nats:
     build: docker/nats
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
     networks:
-      - nats_network
+      - proxy_network
 
 networks:
-  nats_network:
+  proxy_network:
     external:
-      name: nats_network
+      name: proxy_network
