@@ -11,7 +11,7 @@ services:
       - traefik.docker.network=proxy_network
       - traefik.port=8000
       - traefik.frontend.entryPoints=http,https
-      - traefik.frontend.rule=Host:api.${ROOT_URL}
+      - traefik.frontend.rule=Host:api.${MYAPI_ROOT_URL}
       - traefik.passHostHeader=true
 
   nats:
