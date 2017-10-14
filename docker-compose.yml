@@ -38,6 +38,6 @@ services:
       - traefik.port=4223
       - traefik.protocol=ws
       - traefik.frontend.entryPoints=http,https,ws,wss
-      - traefik.frontend.rule=Host:socket.${ROOT_URL}
+      - traefik.frontend.rule=Host:socket.${MYAPI_ROOT_URL}
       - traefik.passHostHeader=true
     command: ws-tcp-relay -p 4223 nats:4222
