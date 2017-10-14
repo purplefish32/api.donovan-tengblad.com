@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  api:
+    build: docker/api
+    expose:
+      - 8000
+    labels:
+      - traefik.backend=api
+      - traefik.enable=true
+      - traefik.docker.network=proxy_network
+      - traefik.port=8000
+      - traefik.frontend.entryPoints=http,https
+      - traefik.frontend.rule=Host:api.${ROOT_URL}
+      - traefik.passHostHeader=true
+  nats:
+    build: docker/nats
+    expose:
+      - "4222"
+
+  proxy:
+    build: docker/proxy
+    ports:
+      - 443:443
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/tmp:/etc/traefik/acme
+
+  ws:
+    build: docker/ws-tcp-relay
+    labels:
+      - traefik.backend=ws
+      - traefik.enable=true
+      - traefik.docker.network=proxy_network
+      - traefik.port=4223
+      - traefik.protocol=ws
+      - traefik.frontend.entryPoints=http,https,ws,wss
+      - traefik.frontend.rule=Host:socket.${ROOT_URL}
+      - traefik.passHostHeader=true
+    command: ws-tcp-relay -p 4223 nats:4222
