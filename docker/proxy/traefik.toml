@@ -24,6 +24,8 @@ email = "purplefish32@gmail.com"
 storage = "acme.json"
 #caServer = "http://172.18.0.1:4000/directory"
 entryPoint = "https"
+onHostRule = true
+onDemand = false
 
 ################################################################
 # Docker configuration backend
@@ -32,5 +34,6 @@ entryPoint = "https"
 watch = true
 endpoint = "unix:///var/run/docker.sock"
 exposedbydefault = false
+
 #swarmmode = true
 #endpoint = "tcp://127.0.0.1:2375"
