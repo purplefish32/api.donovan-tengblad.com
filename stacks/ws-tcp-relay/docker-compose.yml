@@ -4,24 +4,19 @@ services:
   ws:
     build: docker/ws-tcp-relay
     networks:
-      #- nats_network
       - proxy_network
-    ports:
-      - 4223:4223
     labels:
       - traefik.backend=ws
       - traefik.enable=true
       - traefik.docker.network=proxy_network
       - traefik.port=4223
-      - traefik.frontend.rule=Host:api.donovan-tengblad.loc
+      - traefik.protocol=ws
+      - traefik.frontend.entryPoints=http,https,ws,wss
+      - traefik.frontend.rule=Host:socket.${ROOT_URL}
       - traefik.passHostHeader=true
     command: ws-tcp-relay -p 4223 nats:4222
 
 networks:
-  #nats_network:
-  #  external:
-  #    name: nats_network
-
   proxy_network:
     external:
       name: proxy_network

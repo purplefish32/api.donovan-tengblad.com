@@ -1,10 +1,4 @@
 ################################################################
-# Globals
-################################################################
-
-defaultEntryPoints = ["http", "ws"]
-
-################################################################
 # Web configuration backend
 ################################################################
 [web]
@@ -17,12 +11,25 @@ address = ":8080"
     address = ":80"
     compress = false
 
+  [entryPoints.http.redirect]
+    entryPoint = "https"
+
+  # https is the default
+  [entryPoints.https]
+    address = ":443"
+  [entryPoints.https.tls]
+
+[acme]
+email = "purplefish32@gmail.com"
+storage = "acme.json"
+#caServer = "http://172.18.0.1:4000/directory"
+entryPoint = "https"
+
 ################################################################
 # Docker configuration backend
 ################################################################
 [docker]
 watch = true
-domain = "donovan-tengblad.loc"
 endpoint = "unix:///var/run/docker.sock"
 exposedbydefault = false
 #swarmmode = true
