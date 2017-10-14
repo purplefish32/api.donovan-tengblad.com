@@ -1,113 +1,29 @@
 ################################################################
-# Global configuration
+# Globals
 ################################################################
 
-# Enable debug mode
-#
-# Optional
-# Default: false
-#
-debug = true
-
-# Traefik logs file
-# If not defined, logs to stdout
-#
-# Optional
-#
-# traefikLogsFile = "log/traefik.log"
-
-# Log level
-#
-# Optional
-# Default: "ERROR"
-#
-logLevel = "DEBUG"
-
-# Enable access logs
-# By default it will write to stdout and produce logs in the textual
-# Common Log Format (CLF), extended with additional fields.
-#
-# Optional
-#
-# [accessLog]
-
-# Sets the file path for the access log. If not specified, stdout will be used.
-# Intermediate directories are created if necessary.
-#
-# Optional
-# Default: os.Stdout
-#
-# filePath = "/path/to/log/log.txt"
-
-# Format is either "json" or "common".
-#
-# Optional
-# Default: "common"
-#
-# format = "common"
+defaultEntryPoints = ["http", "ws"]
 
 ################################################################
 # Web configuration backend
 ################################################################
-
-defaultEntryPoints = ["http", "https", "ws", "wss"]
-
-# Enable web configuration backend
 [web]
-
-# Web administration port
-#
-# Required
-#
 address = ":8080"
-#[entryPoints]
-#  [entryPoints.http]
-#  address = ":80"
-#    [entryPoints.http.redirect]
-#      entryPoint = "https"
-#  [entryPoints.https]
-#  address = ":443"
-#    [entryPoints.https.tls]
 
-# Enable ACME (Let's Encrypt): automatic SSL
-#[acme]
-# caServer = "https://acme-staging.api.letsencrypt.org/directory"
-#email = "purplefish32@gmail.com"
-#storage = "acme.json" # or "traefik/acme/account" if using KV store
-#entryPoint = "https"
-#onDemand = false
-#OnHostRule = true
+# Entrypoints, http and https
+[entryPoints]
+  # http should be redirected to https
+  [entryPoints.http]
+    address = ":80"
+    compress = false
 
 ################################################################
 # Docker configuration backend
 ################################################################
-
-# Enable Docker configuration backend
 [docker]
-
-# endpoint = "unix:///var/run/docker.sock"
-# domain = "donovan-tengblad.loc"
 watch = true
+domain = "donovan-tengblad.loc"
+endpoint = "unix:///var/run/docker.sock"
 exposedbydefault = false
-
-# Docker server endpoint. Can be a tcp or a unix socket endpoint.
-#
-# Required
-# Default: "unix:///var/run/docker.sock"
-#
-# endpoint = "tcp://10.10.10.10:2375"
-
-# Default domain used.
-# Can be overridden by setting the "traefik.domain" label on a container.
-#
-# Optional
-# Default: ""
-#
-# domain = "docker.localhost"
-
-# Expose containers by default in traefik
-#
-# Optional
-# Default: true
-#
-# exposedbydefault = true
+#swarmmode = true
+#endpoint = "tcp://127.0.0.1:2375"
