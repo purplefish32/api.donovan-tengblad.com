@@ -35,7 +35,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_USER=api_platform
     volumes:
-      - api-db-data:/var/lib/mysql:rw
+      - db_data:/var/lib/mysql:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/mysql:rw
 
@@ -85,6 +85,14 @@ services:
       - traefik.passHostHeader=true
     command: ws-tcp-relay -p 4223 nats:4222
 
+  logspout:
+    image: gliderlabs/logspout:latest
+    ports:
+      - 8888:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
 volumes:
-  api-app-web: {}
-  api-db-data: {}
+  app_web: {}
+  db_data: {}
