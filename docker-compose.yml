@@ -7,7 +7,7 @@ services:
     volumes:
       # Comment out the next line in production
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./docker/api/web:/srv/api-platform/web:ro
+      - app_web:/srv/api-platform/web:ro
 
   varnish:
     build: docker/varnish
@@ -50,7 +50,7 @@ services:
       # Comment out the next line in production
       - ./docker/api:/srv/api-platform:rw
       # This is for assets:install
-      - ./docker/api/web:/srv/api-platform/web:rw
+      - app_web:/srv/api-platform/web:rw
       # If you develop on Linux, comment out the following volumes to just use bind-mounted project directory from host
       - /srv/api-platform/var/
       - /srv/api-platform/var/cache/
@@ -71,7 +71,7 @@ services:
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /var/tmp:/etc/traefik/acme
+      - proxy_data:/etc/traefik/acme
 
   ws:
     build: docker/ws-tcp-relay
@@ -96,3 +96,4 @@ services:
 volumes:
   app_web: {}
   db_data: {}
+  proxy_data: {}
