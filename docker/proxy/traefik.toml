@@ -11,8 +11,8 @@ address = ":8080"
     address = ":80"
     compress = false
 
-  [entryPoints.http.redirect]
-    entryPoint = "https"
+  #[entryPoints.http.redirect]
+  #  entryPoint = "https"
 
   # https is the default
   [entryPoints.https]
