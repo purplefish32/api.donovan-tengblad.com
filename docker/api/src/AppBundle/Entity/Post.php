@@ -31,6 +31,14 @@ class Post
      */
     private $title = '';
 
+    /**
+     * @var string Something else
+     *
+     * @ORM\Column
+     * @Assert\NotBlank
+     */
+    private $content = '';
+
     public function getId()
     {
         return $this->id;
@@ -44,5 +52,15 @@ class Post
     public function setTitle(string $title)
     {
         $this->title = $title;
+    }
+
+    public function getContent() : string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content)
+    {
+        $this->content = $content;
     }
 }
