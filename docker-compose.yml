@@ -1,18 +1,61 @@
 version: "3"
 
 services:
-  api:
-    build: docker/api
-    expose:
-      - 8000
+  nginx:
+    build: docker/nginx
+
+    volumes:
+      # Comment out the next line in production
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./docker/api/web:/srv/api-platform/web:ro
+
+  varnish:
+    build: docker/varnish
+    depends_on:
+      - app
+      - nginx
+    volumes:
+      - ./docker/varnish/conf:/etc/varnish:ro
     labels:
       - traefik.backend=api
       - traefik.enable=true
       - traefik.docker.network=proxy_network
-      - traefik.port=8000
       - traefik.frontend.entryPoints=http,https
       - traefik.frontend.rule=Host:api.${MYAPI_ROOT_URL}
       - traefik.passHostHeader=true
+
+  db:
+    build: docker/db
+
+    environment:
+      - MYSQL_DATABASE=api_platform
+      # You should definitely change the password in production
+      - MYSQL_PASSWORD=api_platform
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=api_platform
+    volumes:
+      - api-db-data:/var/lib/mysql:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/mysql:rw
+
+  app:
+    build: docker/api
+    depends_on:
+      - db
+    environment:
+      # Change to prod in production
+      - SYMFONY_ENV=dev
+    volumes:
+      # Comment out the next line in production
+      - ./docker/api:/srv/api-platform:rw
+      # This is for assets:install
+      - ./docker/api/web:/srv/api-platform/web:rw
+      # If you develop on Linux, comment out the following volumes to just use bind-mounted project directory from host
+      - /srv/api-platform/var/
+      - /srv/api-platform/var/cache/
+      - /srv/api-platform/var/logs/
+      - /srv/api-platform/var/sessions/
+      - /srv/api-platform/vendor/
 
   nats:
     build: docker/nats
@@ -41,3 +84,7 @@ services:
       - traefik.frontend.rule=Host:socket.${MYAPI_ROOT_URL}
       - traefik.passHostHeader=true
     command: ws-tcp-relay -p 4223 nats:4222
+
+volumes:
+  api-app-web: {}
+  api-db-data: {}
