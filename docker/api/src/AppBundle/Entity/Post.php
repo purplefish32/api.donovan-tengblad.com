@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource
  * @ORM\Entity
  */
-class Foo
+class Post
 {
     /**
      * @var int The entity Id
@@ -29,20 +29,20 @@ class Foo
      * @ORM\Column
      * @Assert\NotBlank
      */
-    private $bar = '';
+    private $title = '';
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getBar() : string
+    public function getTitle() : string
     {
-        return $this->bar;
+        return $this->title;
     }
 
-    public function setBar(string $bar)
+    public function setTitle(string $title)
     {
-        $this->bar = $bar;
+        $this->title = $title;
     }
 }

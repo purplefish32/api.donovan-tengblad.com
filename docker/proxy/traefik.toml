@@ -33,7 +33,7 @@ onDemand = false
 [docker]
 watch = true
 endpoint = "unix:///var/run/docker.sock"
-exposedbydefault = false
+exposedbydefault = true
 
 #swarmmode = true
 #endpoint = "tcp://127.0.0.1:2375"
