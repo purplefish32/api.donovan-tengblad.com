@@ -68,7 +68,6 @@ services:
     ports:
       - 443:443
       - 80:80
-      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - proxy_data:/etc/traefik/acme
@@ -85,6 +84,12 @@ services:
       - traefik.passHostHeader=true
     command: ws-tcp-relay -p 4223 nats:4222
 
+  ipfs:
+    image: jbenet/go-ipfs:latest
+    ports:
+      - 8080:8080
+      - 4001:4001
+
   logspout:
     image: gliderlabs/logspout:latest
     ports:
@@ -97,3 +102,4 @@ volumes:
   app_web: {}
   db_data: {}
   proxy_data: {}
+  ipfs_data: {}
