@@ -60,8 +60,10 @@ services:
 
   nats:
     build: docker/nats
-    expose:
-      - "4222"
+    #expose:
+    #  - "4222"
+    ports:
+      - "4222:4222"
 
   proxy:
     build: docker/proxy
